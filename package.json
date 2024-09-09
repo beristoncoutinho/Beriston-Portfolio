@@ -1,7 +1,7 @@
 {
     "name": "developer-portfolio",
     "version": "0.1.0",
-    "homepage": "https://beristoncoutinho.github.io/Beriston_Coutinho_Portfolio",
+    "homepage": "https://beristoncoutinho.github.io/Beriston-Portfolio",
     "private": true,
     "dependencies": {
         "@material-ui/core": "^4.12.2",
