@@ -18,13 +18,15 @@ function App() {
 
   return (
     <div className="app">
-      <Router>
-        <ScrollToTop/>
+      {/* Add basename to handle GitHub Pages correctly */}
+      <Router basename="/Beriston-Portfolio">
+        <ScrollToTop />
         <Switch>
+          {/* Corrected path for the project page */}
           <Route path="/" exact component={Main} />
-          {/* <Route path="/blog" exact component={BlogPage} /> */}
           <Route path="/projects" exact component={ProjectPage} />
 
+          {/* Redirect to the main page if no route matches */}
           <Redirect to="/" />
         </Switch>
       </Router>
