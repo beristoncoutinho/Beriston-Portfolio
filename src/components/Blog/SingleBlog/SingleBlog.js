@@ -1,7 +1,7 @@
 import React from 'react'
 import Fade from 'react-reveal/Fade';
 
-import placeholder from '../../../assets/png/placeholder1.png'
+import placeholder from '../../../assets/png/placeholder.png'
 import './SingleBlog.css'
 
 function SingleBlog({ theme, title, desc, date, image, url, id }) {
