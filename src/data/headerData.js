@@ -1,5 +1,5 @@
 import resume from '../assets/pdf/Beriston_resume.pdf'
-import profile from '../assets/png/profile.jpeg'
+import profile from '../assets/png/profile-3.jpeg'
 export const headerData = {
     name: 'Beriston Coutinho',
     title: "UI/UX",

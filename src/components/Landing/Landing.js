@@ -7,9 +7,8 @@ import './Landing.css';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { headerData } from '../../data/headerData';
 import { socialsData } from '../../data/socialsData';
-
+import { FaSquareXTwitter } from "react-icons/fa6";
 import {
-    FaTwitter,
     FaLinkedin,
     FaGithub,
     FaYoutube,
@@ -83,7 +82,7 @@ function Landing() {
                                 target='_blank'
                                 rel='noreferrer'
                             >
-                                <FaTwitter
+                                <FaSquareXTwitter
                                     className='landing--social'
                                     style={{ color: theme.secondary }}
                                     aria-label='Twitter'

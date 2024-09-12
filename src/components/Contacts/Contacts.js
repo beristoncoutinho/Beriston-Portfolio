@@ -4,18 +4,15 @@ import CloseIcon from '@material-ui/icons/Close';
 import axios from 'axios';
 import isEmail from 'validator/lib/isEmail';
 import { makeStyles } from '@material-ui/core/styles';
+// import { BsTwitterX } from "react-icons/bs";
+import { FaSquareXTwitter } from "react-icons/fa6";
+import { FaLinkedin } from "react-icons/fa6";
 import {
-    FaTwitter,
-    FaLinkedinIn,
     FaGithub,
     FaYoutube,
-    FaBloggerB,
-    FaRedditAlien,
     FaStackOverflow,
     FaCodepen,
     FaInstagram,
-    FaGitlab,
-    FaMediumM,
 } from 'react-icons/fa';
 import { AiOutlineSend, AiOutlineCheckCircle } from 'react-icons/ai';
 import { FiPhone, FiAtSign } from 'react-icons/fi';
@@ -320,7 +317,7 @@ function Contacts() {
                                     rel='noreferrer'
                                     className={classes.socialIcon}
                                 >
-                                    <FaTwitter aria-label='Twitter' />
+                                    <FaSquareXTwitter aria-label='Twitter' />
                                     
                                 </a>
                             )}
@@ -341,7 +338,7 @@ function Contacts() {
                                     rel='noreferrer'
                                     className={classes.socialIcon}
                                 >
-                                    <FaLinkedinIn aria-label='LinkedIn' />
+                                    <FaLinkedin aria-label='LinkedIn' />
                                 </a>
                             )}
                             {/* {socialsData.instagram && (
