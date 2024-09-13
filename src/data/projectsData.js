@@ -11,7 +11,7 @@ import eight from '../assets/svg/projects/eight.svg'
 export const projectsData = [{
         id: 1,
         projectName: 'SafeNavigation',
-        projectDesc: 'SafeNavigation is a mobile app designed to provide real-time alerts about roadblocks and disruptions in Goa, especially during monsoon seasons. It helps residents and tourists navigate safely by showing alternative routes, incident reports, and safety tips. The app aims to keep users updated and save travel time.',
+        projectDesc: 'SafeNavigation is a mobile app designed to provide real-time alerts about roadblocks and disruptions in Goa, especially during monsoon seasons. It helps residents and tourists navigate safely by showing alternative routes, incident reports, and safety tips.',
         tags: ['UI/UX Design', 'Material Design', 'Prototype'],
         // code: 'https://github.com/beristoncoutinho/safenavigation', // update with actual link if available
         demo: 'https://www.figma.com/proto/UKc9NkfrymEwn0ww0xWphh/SafeNvigation?node-id=5-219&t=omX4RHd3VTT2qbNB-1', // update with actual demo link if available
