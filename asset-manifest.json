@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Beriston-Portfolio/static/css/main.24aeef44.css",
-    "main.js": "/Beriston-Portfolio/static/js/main.f77454bc.js",
+    "main.css": "/Beriston-Portfolio/static/css/main.528a77ae.css",
+    "main.js": "/Beriston-Portfolio/static/js/main.58036408.js",
     "static/js/453.1cc257ae.chunk.js": "/Beriston-Portfolio/static/js/453.1cc257ae.chunk.js",
     "static/media/four.svg": "/Beriston-Portfolio/static/media/four.797cac62273af3693cd624c5f58e33b5.svg",
     "static/media/three.svg": "/Beriston-Portfolio/static/media/three.d4f751d1b799f45195a256c314211dfe.svg",
@@ -14,10 +14,10 @@
     "static/media/expPink.svg": "/Beriston-Portfolio/static/media/expPink.40a7690a4f1db23209db1a06c4b8c10a.svg",
     "static/media/expPurple.svg": "/Beriston-Portfolio/static/media/expPurple.96a6bf6351cdcf2af2a140c708d9912b.svg",
     "static/media/expYellow.svg": "/Beriston-Portfolio/static/media/expYellow.22be417c6d1c281c3b4b6ee0e80f0a5f.svg",
-    "static/media/profile-3.jpeg": "/Beriston-Portfolio/static/media/profile-3.e25546ed7cb96198dee5.jpeg",
     "static/media/five.svg": "/Beriston-Portfolio/static/media/five.89b924ebc79f37d920813b8e786786ba.svg",
     "static/media/seven.svg": "/Beriston-Portfolio/static/media/seven.3168c0a56a95f988490da0dc09e72c52.svg",
     "static/media/two.svg": "/Beriston-Portfolio/static/media/two.721a06723367c73fc2cee44b09f50c67.svg",
+    "static/media/profile7.jpeg": "/Beriston-Portfolio/static/media/profile7.ecbd57560016f52bebeb.jpeg",
     "static/media/Beriston_resume.pdf": "/Beriston-Portfolio/static/media/Beriston_resume.cfd5edcd3c81415eb99c.pdf",
     "static/media/BestermindRegular.ttf": "/Beriston-Portfolio/static/media/BestermindRegular.e58a192233afb30a6a59.ttf",
     "static/media/one.svg": "/Beriston-Portfolio/static/media/one.a3146128c9b6ecbd1ffa523e1f3f734d.svg",
@@ -144,12 +144,12 @@
     "static/media/vue.svg": "/Beriston-Portfolio/static/media/vue.47bdfb5a7a54d8ade2aa4c61d5148668.svg",
     "static/media/vuetifyjs.svg": "/Beriston-Portfolio/static/media/vuetifyjs.8a22a3ec81ad62e97094feab6e7ee0fb.svg",
     "static/media/bulma.svg": "/Beriston-Portfolio/static/media/bulma.5910d4416e077262d0264109649ab214.svg",
-    "main.24aeef44.css.map": "/Beriston-Portfolio/static/css/main.24aeef44.css.map",
-    "main.f77454bc.js.map": "/Beriston-Portfolio/static/js/main.f77454bc.js.map",
+    "main.528a77ae.css.map": "/Beriston-Portfolio/static/css/main.528a77ae.css.map",
+    "main.58036408.js.map": "/Beriston-Portfolio/static/js/main.58036408.js.map",
     "453.1cc257ae.chunk.js.map": "/Beriston-Portfolio/static/js/453.1cc257ae.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.24aeef44.css",
-    "static/js/main.f77454bc.js"
+    "static/css/main.528a77ae.css",
+    "static/js/main.58036408.js"
   ]
 }
