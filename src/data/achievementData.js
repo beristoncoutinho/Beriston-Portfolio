@@ -2,6 +2,17 @@ export const achievementData = {
 
     bio: "In a world that never stops evolving, the most valuable skill is the courage to adapt, reinvent, and constantly seek new knowledge.",
     achievements: [{
+            id: 6,
+            title: 'Google UX Design',
+            details: 'UX Designing course from Coursera',
+            date: 'September 14, 2024',
+            field: 'UX Designing',
+            image: 'https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE~1ABUUQK6NBQC/CERTIFICATE_LANDING_PAGE~1ABUUQK6NBQC.jpeg',
+            // certificate: 'path/to/r_programming_certificate.pdf' // Add the path to the PDF certificate here
+        },
+
+
+        {
             id: 4,
             title: 'Build Wireframes and Low-Fidelity Prototypes',
             details: 'UX Designing course from Coursera',

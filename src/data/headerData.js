@@ -1,4 +1,4 @@
-import resume from '../assets/pdf/Beriston_resume.pdf'
+import resume from '../assets/pdf/Beriston_Coutinho_Resume.pdf'
 import profile from '../assets/png/profile7.jpeg'
 export const headerData = {
     name: 'Beriston Coutinho',
