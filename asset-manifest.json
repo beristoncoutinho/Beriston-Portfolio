@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Beriston-Portfolio/static/css/main.528a77ae.css",
-    "main.js": "/Beriston-Portfolio/static/js/main.0f89e6ea.js",
+    "main.js": "/Beriston-Portfolio/static/js/main.8089cec1.js",
     "static/js/453.1cc257ae.chunk.js": "/Beriston-Portfolio/static/js/453.1cc257ae.chunk.js",
     "static/media/four.svg": "/Beriston-Portfolio/static/media/four.797cac62273af3693cd624c5f58e33b5.svg",
     "static/media/three.svg": "/Beriston-Portfolio/static/media/three.d4f751d1b799f45195a256c314211dfe.svg",
@@ -145,11 +145,11 @@
     "static/media/vuetifyjs.svg": "/Beriston-Portfolio/static/media/vuetifyjs.8a22a3ec81ad62e97094feab6e7ee0fb.svg",
     "static/media/bulma.svg": "/Beriston-Portfolio/static/media/bulma.5910d4416e077262d0264109649ab214.svg",
     "main.528a77ae.css.map": "/Beriston-Portfolio/static/css/main.528a77ae.css.map",
-    "main.0f89e6ea.js.map": "/Beriston-Portfolio/static/js/main.0f89e6ea.js.map",
+    "main.8089cec1.js.map": "/Beriston-Portfolio/static/js/main.8089cec1.js.map",
     "453.1cc257ae.chunk.js.map": "/Beriston-Portfolio/static/js/453.1cc257ae.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.528a77ae.css",
-    "static/js/main.0f89e6ea.js"
+    "static/js/main.8089cec1.js"
   ]
 }
