@@ -13,9 +13,9 @@ export const projectsData = [{
         projectName: 'SafeNavigation',
         projectDesc: 'SafeNavigation is a mobile app designed to provide real-time alerts about roadblocks and disruptions in Goa, especially during monsoon seasons. It helps residents and tourists navigate safely by showing alternative routes, incident reports, and safety tips.',
         tags: ['UI/UX Design', 'Material Design', 'Prototype'],
-        // code: 'https://github.com/beristoncoutinho/safenavigation', // update with actual link if available
+        code: 'https://www.behance.net/gallery/207010889/SafeNavigation', // update with actual link if available
         demo: 'https://www.figma.com/proto/UKc9NkfrymEwn0ww0xWphh/SafeNvigation?node-id=5-219&t=omX4RHd3VTT2qbNB-1', // update with actual demo link if available
-        image: 'https://raw.githubusercontent.com/beristoncoutinho/Figma-Poojects/main/Screenshot%202024-09-03%20095906.png', // update with actual image link if available
+        image: 'https://raw.githubusercontent.com/beristoncoutinho/projectImages/refs/heads/main/safenavigation.png', // update with actual image link if available
     },
 
     {
@@ -33,7 +33,7 @@ export const projectsData = [{
         tags: ['Android', 'Firebase', 'Java', 'CRUD Operations'],
         code: 'https://github.com/beristoncoutinho/journify', // update with actual link if available
         // demo: 'https://journify-demo.com/', // update with actual demo link if available
-        image: 'https://raw.githubusercontent.com/beristoncoutinho/journify/master/image1.jpeg', // update with actual image link if available
+        image: 'https://raw.githubusercontent.com/beristoncoutinho/projectImages/refs/heads/main/journefy.png', // update with actual image link if available
     },
     {
         id: 4,

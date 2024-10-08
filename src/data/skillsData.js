@@ -1,15 +1,11 @@
 export const skillsData = [
     'HTML',
-    'Javascript',
     'CSS',
-    'React',
-    'MySQL',
     'Microsoft Office',
     'Figma',
-    'Bootstrap',
-    'Tailwind',
     'Canva',
     'Gimp',
+    'illustrator',
 
 
 ]
