@@ -2,7 +2,7 @@ import resume from '../assets/pdf/Beriston_Coutinho_Resume.pdf'
 import profile from '../assets/png/profile-8.png'
 export const headerData = {
     name: 'Beriston Coutinho',
-    title: "UI/UX",
+    title: "Junior Network Engineer",
     desciption: '" Life may be a winding path, but don’t worry about where it leads—enjoy the ride. It’s about the journey, not the destination, so embrace every twist and turn. Explore, learn, and grow, for this journey happens only once. "',
     image: profile,
     resumePdf: resume
