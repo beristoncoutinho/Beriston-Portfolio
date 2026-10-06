@@ -1,4 +1,6 @@
 export const skillsData = [
+
+    'Networking', 'Routing', 'Switching', 'Troubleshooting', 'Firewalls', 'VLANs', 'TCP/IP', 'Subnetting', 'DHCP', 'DNS', 'VPN', 'Active Directory', 'Windows', 'Servers', 'NAS', 'Virtualization', 'Backup', 'Monitoring', 'Security', 'Hardware', 'Support',
     'HTML',
     'CSS',
     'Microsoft Office',
