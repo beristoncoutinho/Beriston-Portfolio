@@ -1,7 +1,7 @@
 {
     "name": "developer-portfolio",
     "version": "0.1.0",
-    "homepage": "https://beristoncoutinho.github.io/Beriston-Portfolio",
+    "homepage": "https://beristoncoutinho.in/",
     "private": true,
     "dependencies": {
         "@emailjs/browser": "^5.0.2",
