@@ -1,173 +1,421 @@
-.skills {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 60vh;
-    padding: 2.5rem 2rem 2rem 2rem;
+/* Colours come from --primary / --secondary / --tertiary (set from your theme in Skills.js) */
+
+.skills-section {
+    width: 100%;
+    padding: 5rem 2rem;
+    box-sizing: border-box;
+    /* faint grid, same as the Experience section */
+    background-image:
+        linear-gradient(color-mix(in srgb, var(--tertiary) 5%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--tertiary) 5%, transparent) 1px, transparent 1px);
+    background-size: 44px 44px;
 }
 
-.skillsHeader {
-    display: flex;
-    align-items: center;
-    justify-content: center; 
+.skills-inner {
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
-.skillsHeader h2 {
+.skills-header h2 {
+    margin: 0 0 2rem;
+    font-size: 2.8rem;
+    font-weight: 800;
     font-family: var(--primaryFont);
-    font-style: normal;
-    font-weight: bold;
-    font-size: 3.5rem;
-    text-align: center;
 }
 
-.skillsContainer {
+/* ---------- SWITCH FACEPLATE ---------- */
+.switch {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--tertiary) 7%, var(--secondary));
+    border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent);
+    box-shadow: 0 0 40px color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.screw {
+    position: absolute;
+    z-index: 1;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1.5px solid color-mix(in srgb, var(--tertiary) 35%, transparent);
+    background: color-mix(in srgb, var(--tertiary) 12%, var(--secondary));
+}
+.screw::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 5px;
+    height: 1.5px;
+    background: color-mix(in srgb, var(--tertiary) 40%, transparent);
+    transform: translate(-50%, -50%) rotate(35deg);
+}
+.screw.s1 { top: 10px; left: 10px; }
+.screw.s2 { top: 10px; right: 10px; }
+.screw.s3 { bottom: 10px; left: 10px; }
+.screw.s4 { bottom: 10px; right: 10px; }
+
+.switch-bar {
     display: flex;
     align-items: center;
-    justify-content: center; 
-    width: 100%;
-    margin-top: 3.5rem;
-    padding: 0 2rem;
+    justify-content: space-between;
+    padding: 0.9rem 2rem;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.78rem;
+    background: color-mix(in srgb, var(--tertiary) 12%, var(--secondary));
+    border-bottom: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
 }
 
-.skill--scroll {
-    width: 100%;
-    margin: 0 2rem;
+.switch-name {
+    color: var(--primary);
 }
 
+.switch-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: color-mix(in srgb, var(--tertiary) 70%, transparent);
+}
 
-.skill--box {
-    background: #FAFAFA;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.12);
-    border-radius: 10px;
-    width: 160px;
-    height: 160px;
-    margin: 1.5rem;
+.switch-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+}
+
+.switch-body {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+}
+
+/* ---------- VLAN TABS ---------- */
+.vlan-tabs {
     display: flex;
     flex-direction: column;
+    gap: 0.3rem;
+    padding: 1rem;
+    border-right: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+.vlan-tab {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    font: inherit;
+    color: var(--tertiary);
+    background: none;
+    border: none;
+    border-left: 3px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0.65;
+    transition: opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.vlan-tab:hover {
+    opacity: 1;
+    background: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+.vlan-tab.is-active {
+    opacity: 1;
+    border-left-color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.vlan-tab:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.vlan-id {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.7rem;
+    color: var(--primary);
+}
+
+.vlan-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* ---------- PORTS ---------- */
+.switch-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    padding: 1.6rem;
+    min-width: 0;
+}
+
+.port-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1rem;
+}
+
+.port {
+    --port-bg: color-mix(in srgb, var(--tertiary) 4%, var(--secondary));
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1.6rem 0.8rem 1rem;
+    font: inherit;
+    color: var(--tertiary);
+    background: var(--port-bg);
+    border: 1px solid color-mix(in srgb, var(--primary) 28%, transparent);
+    border-radius: 10px;
+    cursor: pointer;
+    animation: port-in 0.45s ease both;
+    animation-delay: calc(var(--i) * 60ms);
+    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.port:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--primary) 80%, transparent);
+    box-shadow: 0 8px 22px -10px var(--primary);
+}
+
+.port:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.port.is-selected {
+    --port-bg: color-mix(in srgb, var(--primary) 12%, var(--secondary));
+    border-color: var(--primary);
+    box-shadow: 0 0 22px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+@keyframes port-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.port-no {
+    position: absolute;
+    top: 0.55rem;
+    left: 0.7rem;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.62rem;
+    color: color-mix(in srgb, var(--tertiary) 50%, transparent);
+}
+
+/* link LED: switches on one after another when a VLAN is opened */
+.port-led {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.65rem;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 6px #22c55e;
+    animation: led-on 0.4s ease both;
+    animation-delay: calc(var(--i) * 60ms + 250ms);
+}
+
+@keyframes led-on {
+    from {
+        background: color-mix(in srgb, var(--tertiary) 30%, transparent);
+        box-shadow: 0 0 0 transparent;
+    }
+    to {
+        background: #22c55e;
+        box-shadow: 0 0 6px #22c55e;
+    }
+}
+
+/* activity LED: blinks at slightly different times on every port */
+.port-act {
+    position: absolute;
+    top: 0.6rem;
+    right: 1.55rem;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f59e0b;
+    opacity: 0.15;
+    animation: act-blink 2.6s steps(1, end) infinite;
+    animation-delay: calc(var(--i) * 370ms);
+}
+
+.port:hover .port-act {
+    animation-duration: 0.7s;
+}
+
+@keyframes act-blink {
+    0%   { opacity: 0.15; }
+    8%   { opacity: 1; }
+    16%  { opacity: 0.15; }
+    44%  { opacity: 1; }
+    50%  { opacity: 0.15; }
+    100% { opacity: 0.15; }
+}
+
+/* RJ45-style socket around the icon */
+.port-socket {
+    position: relative;
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 1rem;
-    transition: 300ms ease-in-out;
+    width: 72px;
+    height: 58px;
+    box-sizing: border-box;
+    padding-top: 6px;
+    font-size: 1.7rem;
+    color: var(--primary);
+    border: 2px solid color-mix(in srgb, var(--tertiary) 40%, transparent);
+    border-radius: 8px 8px 4px 4px;
+    background: color-mix(in srgb, var(--tertiary) 8%, var(--secondary));
+    transition: border-color 0.25s ease;
 }
 
-.skill--box:hover  {
-    transform: scale(1.15);
+.port:hover .port-socket,
+.port.is-selected .port-socket {
+    border-color: var(--primary);
 }
 
-
-.skill--box > img {
-    height: 50px;
-    pointer-events: none;
+/* contact pins along the top edge */
+.port-socket::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 8px;
+    right: 8px;
+    height: 5px;
+    background: repeating-linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--tertiary) 45%, transparent) 0 2px,
+        transparent 2px 7px
+    );
 }
 
+/* latch notch in the bottom edge */
+.port-socket::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 20px;
+    height: 4px;
+    transform: translateX(-50%);
+    background: var(--port-bg);
+}
 
-.skill--box h3 {
-    font-family: Big Shoulders Text;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 22px;
+.port-name {
+    font-family: var(--primaryFont);
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.3;
     text-align: center;
-    margin-top: 1rem;
 }
 
-
-.marquee {
-    padding: 3rem 0;
+/* ---------- STATUS READOUT ---------- */
+.port-status {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+    min-height: 4.4rem;
+    padding: 0.9rem 1.1rem;
+    box-sizing: border-box;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.78rem;
+    color: color-mix(in srgb, var(--tertiary) 80%, transparent);
+    background: color-mix(in srgb, var(--primary) 7%, transparent);
+    border: 1px solid color-mix(in srgb, var(--primary) 28%, transparent);
+    border-radius: 10px;
 }
 
-
-@media (min-width: 992px) and (max-width: 1380px) {
-    .skills {
-        padding: 2rem 1rem 1rem 1rem;
-    }
-    .skillsContainer {
-        padding: 1.5rem;
-        margin-top: 1.5rem;
-    }
+.ps-if {
+    color: var(--primary);
 }
 
-
-@media screen and (max-width: 992px) {
-    .skills {
-        padding: 1rem;
-        min-height: 100%;
-    }
-    .skillsContainer {
-        padding: 1rem;
-        margin: 1rem 0;
-    }
-    .skillsHeader h2 {
-        font-size: 3.2rem;
-    }
-    .skill--box {
-        width: 150px;
-        height: 150px;
-        margin: 1.2rem;
-        padding: 2rem 1rem;
-    }
-
-    .skill--box > img {
-        height: 45px;
-    }
-
-
-    .skill--box h3 {
-        font-size: 20px;
-        margin-top: 1rem;
-    }
-
+.ps-name {
+    font-family: var(--primaryFont);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--tertiary);
 }
 
-@media screen and (max-width: 800px) {
-    .skills {
-        padding: 0.5rem;
-    }
-    .skillsContainer {
-        padding: 0.5rem;
-    }
-    .skillsHeader h2 {
-        font-size: 3rem;
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 800px) {
+    .skills-section {
+        padding: 4rem 1rem;
     }
 
-    .skill--scroll {
-        width: 100%;
-        margin: 0;
+    .switch-body {
+        grid-template-columns: 1fr;
+    }
+
+    .vlan-tabs {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 0.8rem;
+        border-right: none;
+        border-bottom: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+    }
+
+    .vlan-tab {
+        flex-shrink: 0;
+        white-space: nowrap;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+
+    .vlan-tab.is-active {
+        border-bottom-color: var(--primary);
+    }
+
+    .switch-main {
+        padding: 1.2rem;
     }
 }
 
-@media screen and (max-width: 600px) {
-    .skill--box {
-        width: 135px;
-        height: 135px;
-        margin: 1.2rem;
-        padding: 2rem 1rem;
+@media (max-width: 600px) {
+    .skills-header h2 {
+        font-size: 2.2rem;
     }
 
-    .skill--box > img {
-        height: 40px;
+    .switch-bar {
+        padding: 0.8rem 1.4rem;
     }
 
-    .skillsHeader h2 {
-        font-size: 2.5rem;
-    }
-
-    .skill--box h3 {
-        font-size: 18px;
-        margin-top: 1rem;
+    .port-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 0.8rem;
     }
 }
 
-@media screen and (max-width: 400px) {
-
-}
-  
-@media only screen and (min-device-width: 320px) and (max-device-width: 
-  480px) and (-webkit-device-pixel-ratio: 2) and (device-aspect-ratio: 2/3) {
-
-}
-
-
-@media only screen and (device-width: 768px) {
-
+@media (prefers-reduced-motion: reduce) {
+    .port,
+    .port-led,
+    .port-act {
+        animation: none;
+    }
+    .port-act {
+        opacity: 0.4;
+    }
+    .port,
+    .port-socket,
+    .vlan-tab {
+        transition: none;
+    }
 }

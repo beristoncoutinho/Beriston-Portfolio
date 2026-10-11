@@ -16,6 +16,7 @@
 .landing--img {
     --img-size: 400px;
     position: absolute;
+    z-index: 2; /* stays above the network canvas */
     border: 2px solid gold;
     left: 35%;
     transform: translateX(-50%);
@@ -54,6 +55,8 @@
 }
 
 .landing--container-right {
+    position: relative;
+    overflow: hidden;
     flex: 65%;
     height: 100%;
     background-color: #eaeaea;
@@ -63,11 +66,21 @@
     justify-content: center;
 }
 
+/* Text sits above the network. Empty areas let the mouse through to the 3D
+   scene, so only the links and buttons catch clicks. */
 .lcr--content {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
     width: 45%;
     margin-right: 7rem;
     font-family: var(--primaryFont);
     font-style: normal;
+}
+
+.lcr--content a,
+.lcr--content button {
+    pointer-events: auto;
 }
 
 .lcr--content h6 {
@@ -98,6 +111,66 @@
     align-items: center;
     justify-content: space-between;
     font-family: "var(--primaryFont)", sans-serif;
+}
+
+/* ---------- 3D NETWORK BACKGROUND ---------- */
+.network-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.network-mount {
+    position: absolute;
+    inset: 0;
+    /* fade the scene a little behind the text so it stays readable */
+    -webkit-mask-image: radial-gradient(
+        ellipse 38% 36% at 62% 50%,
+        rgba(0, 0, 0, 0.35) 0%,
+        rgba(0, 0, 0, 0.35) 70%,
+        #000 100%
+    );
+    mask-image: radial-gradient(
+        ellipse 38% 36% at 62% 50%,
+        rgba(0, 0, 0, 0.35) 0%,
+        rgba(0, 0, 0, 0.35) 70%,
+        #000 100%
+    );
+}
+
+.network-mount canvas {
+    display: block;
+}
+
+.network-hint {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.2rem;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--tertiary);
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+.net-tooltip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    padding: 0.4rem 0.7rem;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.72rem;
+    line-height: 1.5;
+    white-space: pre;
+    color: var(--tertiary);
+    background: color-mix(in srgb, var(--secondary) 92%, transparent);
+    border: 1px solid color-mix(in srgb, var(--primary) 60%, transparent);
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
 }
 
 @media (max-width: 1100px) {
@@ -210,6 +283,20 @@
     }
     .lcr-buttonContainer button {
         margin-top: -20%;
+    }
+    .network-mount {
+        -webkit-mask-image: radial-gradient(
+            ellipse 50% 32% at 50% 58%,
+            rgba(0, 0, 0, 0.3) 0%,
+            rgba(0, 0, 0, 0.3) 70%,
+            #000 100%
+        );
+        mask-image: radial-gradient(
+            ellipse 50% 32% at 50% 58%,
+            rgba(0, 0, 0, 0.3) 0%,
+            rgba(0, 0, 0, 0.3) 70%,
+            #000 100%
+        );
     }
 }
 

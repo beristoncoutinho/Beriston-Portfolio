@@ -1,161 +1,266 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Snackbar, IconButton, SnackbarContent } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import axios from 'axios';
-import isEmail from 'validator/lib/isEmail';
 import { makeStyles } from '@material-ui/core/styles';
-// import { BsTwitterX } from "react-icons/bs";
-import { FaSquareXTwitter } from "react-icons/fa6";
-import { FaLinkedin } from "react-icons/fa6";
-import {
-    FaGithub,
-    FaYoutube,
-    FaStackOverflow,
-    FaCodepen,
-    FaInstagram,
-} from 'react-icons/fa';
+import axios from 'axios';
+import emailjs from '@emailjs/browser';
+import isEmail from 'validator/lib/isEmail';
+import { FaSquareXTwitter, FaLinkedin } from 'react-icons/fa6';
+import { FaGithub, FaYoutube } from 'react-icons/fa';
 import { AiOutlineSend, AiOutlineCheckCircle } from 'react-icons/ai';
 import { FiPhone, FiAtSign } from 'react-icons/fi';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 
 import { ThemeContext } from '../../contexts/ThemeContext';
-
 import { socialsData } from '../../data/socialsData';
 import { contactsData } from '../../data/contactsData';
 import './Contacts.css';
 
+/* ---------- Static config ---------- */
+
+// `key` must match the property name in data/socialsData.js (case-sensitive).
+const SOCIALS = [
+    { key: 'twitter', label: 'Twitter', Icon: FaSquareXTwitter },
+    { key: 'github', label: 'GitHub', Icon: FaGithub },
+    { key: 'linkedIn', label: 'LinkedIn', Icon: FaLinkedin },
+    { key: 'youtube', label: 'YouTube', Icon: FaYoutube },
+];
+
+/* ---------- Styles ---------- */
+
+const FIELD_STYLE = (theme) => ({
+    width: '100%',
+    boxSizing: 'border-box',
+    padding: '14px 16px',
+    border: `2px solid ${theme.primary80}`,
+    borderRadius: '14px',
+    backgroundColor: theme.secondary,
+    color: theme.tertiary,
+    fontFamily: 'var(--primaryFont)',
+    fontSize: '1rem',
+    fontWeight: 500,
+    transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+    '&::placeholder': { opacity: 0.55 },
+    '&:focus': {
+        outline: 'none',
+        borderColor: theme.primary600,
+        boxShadow: `0 0 0 4px ${theme.primary80}`,
+    },
+});
+
+const SOFT_ICON = (theme, size, fontSize) => ({
+    width: size,
+    height: size,
+    borderRadius: '14px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize,
+    flexShrink: 0,
+    backgroundColor: theme.primary,
+    color: theme.secondary,
+    transition: 'transform 250ms ease, background-color 250ms ease',
+    '&:hover, &:focus-visible': {
+        transform: 'translateY(-3px)',
+        backgroundColor: theme.tertiary,
+        color: theme.secondary,
+    },
+    '@media (prefers-reduced-motion: reduce)': {
+        transition: 'none',
+        '&:hover, &:focus-visible': { transform: 'none' },
+    },
+});
+
+// Created once, outside the component.
+const useStyles = makeStyles({
+    formCard: ({ theme }) => ({
+        padding: '28px',
+        borderRadius: '24px',
+        border: `1px solid ${theme.primary80}`,
+        backgroundColor: theme.secondary,
+        boxShadow: `0 24px 48px -24px ${theme.primary80}`,
+        '@media (max-width: 600px)': { padding: '18px' },
+    }),
+    input: ({ theme }) => FIELD_STYLE(theme),
+    message: ({ theme }) => ({
+        ...FIELD_STYLE(theme),
+        minHeight: '140px',
+        resize: 'vertical',
+    }),
+    label: ({ theme }) => ({
+        display: 'block',
+        margin: '0 0 8px 4px',
+        color: theme.primary,
+        fontFamily: 'var(--primaryFont)',
+        fontWeight: 600,
+        fontSize: '0.9rem',
+        // cancel the old floating-label offset from Contacts.css
+        transform: 'none',
+        backgroundColor: 'transparent',
+        padding: 0,
+    }),
+    error: {
+        display: 'block',
+        marginTop: '6px',
+        paddingLeft: '4px',
+        fontFamily: 'var(--primaryFont)',
+        fontSize: '0.8rem',
+        color: '#d32f2f',
+    },
+    submitBtn: ({ theme }) => ({
+        borderRadius: '999px',
+        backgroundColor: theme.primary,
+        color: theme.secondary,
+        transition: 'transform 250ms ease, background-color 250ms ease',
+        '&:hover:not(:disabled)': {
+            transform: 'translateY(-2px)',
+            backgroundColor: theme.tertiary,
+        },
+        '&:disabled': { opacity: 0.7, cursor: 'not-allowed' },
+    }),
+    detailRow: ({ theme }) => ({
+        display: 'flex',
+        alignItems: 'center',
+        gap: '14px',
+        padding: '10px 14px',
+        borderRadius: '18px',
+        textDecoration: 'none',
+        transition: 'background-color 200ms ease',
+        '&:hover, &:focus-visible': { backgroundColor: theme.primary80 },
+    }),
+    socialIcon: ({ theme }) => SOFT_ICON(theme, '46px', '21px'),
+    detailsIcon: ({ theme }) => SOFT_ICON(theme, '46px', '22px'),
+});
+
+/* ---------- Helpers ---------- */
+
+const validate = ({ name, email, message }) => {
+    const errors = {};
+    if (!name.trim()) errors.name = 'Enter your name';
+    if (!email.trim()) errors.email = 'Enter your email';
+    else if (!isEmail(email.trim()))
+        errors.email = 'Enter a valid email address';
+    if (!message.trim()) errors.message = 'Enter a message';
+    return errors;
+};
+
+/**
+ * Sends the message.
+ * 1) EmailJS  -> delivers a real email to your inbox (recommended).
+ * 2) sheetAPI -> falls back to your existing Google Sheet endpoint.
+ */
+const sendMessage = async ({ name, email, message }) => {
+    const cfg = contactsData.emailjs;
+
+    if (cfg && cfg.serviceId && cfg.templateId && cfg.publicKey) {
+        return emailjs.send(
+            cfg.serviceId,
+            cfg.templateId,
+            {
+                from_name: name,
+                from_email: email,
+                reply_to: email,
+                message,
+            },
+            { publicKey: cfg.publicKey }
+        );
+    }
+
+    if (contactsData.sheetAPI) {
+        return axios.post(contactsData.sheetAPI, { name, email, message });
+    }
+
+    throw new Error('No email service configured');
+};
+
+/* ---------- Component ---------- */
+
+const INITIAL_FORM = { name: '', email: '', message: '' };
+
 function Contacts() {
-    const [open, setOpen] = useState(false);
-
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
-
-    const [success, setSuccess] = useState(false);
-    const [errMsg, setErrMsg] = useState('');
-
     const { theme } = useContext(ThemeContext);
+    const classes = useStyles({ theme });
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
+    const [form, setForm] = useState(INITIAL_FORM);
+    const [errors, setErrors] = useState({});
+    const [submitting, setSubmitting] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [toast, setToast] = useState({ open: false, text: '' });
+
+    useEffect(() => {
+        if (!success) return undefined;
+        const id = setTimeout(() => setSuccess(false), 4000);
+        return () => clearTimeout(id);
+    }, [success]);
+
+    const showToast = (text) => setToast({ open: true, text });
+
+    const handleToastClose = (event, reason) => {
+        if (reason === 'clickaway') return;
+        setToast((t) => ({ ...t, open: false }));
+    };
+
+    const handleChange = (field) => (e) => {
+        const { value } = e.target;
+        setForm((f) => ({ ...f, [field]: value }));
+        if (errors[field]) setErrors((er) => ({ ...er, [field]: undefined }));
+    };
+
+    const handleContactForm = async (e) => {
+        e.preventDefault();
+        if (submitting) return;
+
+        const found = validate(form);
+        setErrors(found);
+        if (Object.keys(found).length > 0) {
+            showToast('Fix the highlighted fields');
             return;
         }
 
-        setOpen(false);
-    };
-
-    const useStyles = makeStyles((t) => ({
-        input: {
-            border: `4px solid ${theme.primary80}`,
-            backgroundColor: `${theme.secondary}`,
-            color: `${theme.tertiary}`,
-            fontFamily: 'var(--primaryFont)',
-            fontWeight: 500,
-            transition: 'border 0.2s ease-in-out',
-            '&:focus': {
-                border: `4px solid ${theme.primary600}`,
-            },
-        },
-        message: {
-            border: `4px solid ${theme.primary80}`,
-            backgroundColor: `${theme.secondary}`,
-            color: `${theme.tertiary}`,
-            fontFamily: 'var(--primaryFont)',
-            fontWeight: 500,
-            transition: 'border 0.2s ease-in-out',
-            '&:focus': {
-                border: `4px solid ${theme.primary600}`,
-            },
-        },
-        label: {
-            backgroundColor: `${theme.secondary}`,
-            color: `${theme.primary}`,
-            fontFamily: 'var(--primaryFont)',
-            fontWeight: 600,
-            fontSize: '0.9rem',
-            padding: '0 5px',
-            transform: 'translate(25px,50%)',
-            display: 'inline-flex',
-        },
-        socialIcon: {
-            width: '45px',
-            height: '45px',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '21px',
-            backgroundColor: theme.primary,
-            color: theme.secondary,
-            transition: '250ms ease-in-out',
-            '&:hover': {
-                transform: 'scale(1.1)',
-                color: theme.secondary,
-                backgroundColor: theme.tertiary,
-            },
-        },
-        detailsIcon: {
-            backgroundColor: theme.primary,
-            color: theme.secondary,
-            borderRadius: '50%',
-            width: '45px',
-            height: '45px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '23px',
-            transition: '250ms ease-in-out',
-            flexShrink: 0,
-            '&:hover': {
-                transform: 'scale(1.1)',
-                color: theme.secondary,
-                backgroundColor: theme.tertiary,
-            },
-        },
-        submitBtn: {
-            backgroundColor: theme.primary,
-            color: theme.secondary,
-            transition: '250ms ease-in-out',
-            '&:hover': {
-                transform: 'scale(1.08)',
-                color: theme.secondary,
-                backgroundColor: theme.tertiary,
-            },
-        },
-    }));
-
-    const classes = useStyles();
-
-    const handleContactForm = (e) => {
-        e.preventDefault();
-
-        if (name && email && message) {
-            if (isEmail(email)) {
-                const responseData = {
-                    name: name,
-                    email: email,
-                    message: message,
-                };
-
-                axios.post(contactsData.sheetAPI, responseData).then((res) => {
-                    console.log('success');
-                    setSuccess(true);
-                    setErrMsg('');
-
-                    setName('');
-                    setEmail('');
-                    setMessage('');
-                    setOpen(false);
-                });
-            } else {
-                setErrMsg('Invalid email');
-                setOpen(true);
-            }
-        } else {
-            setErrMsg('Enter all the fields');
-            setOpen(true);
+        setSubmitting(true);
+        try {
+            await sendMessage({
+                name: form.name.trim(),
+                email: form.email.trim(),
+                message: form.message.trim(),
+            });
+            setForm(INITIAL_FORM);
+            setSuccess(true);
+            showToast('Message sent. Thanks for reaching out!');
+        } catch (err) {
+            console.error('Contact form error:', err);
+            showToast(
+                `Could not send your message. Email me at ${contactsData.email} instead.`
+            );
+        } finally {
+            setSubmitting(false);
         }
     };
+
+    const renderField = (id, label, control) => (
+        <div className='input-container' style={{ marginBottom: '18px' }}>
+            <label htmlFor={id} className={classes.label}>
+                {label}
+            </label>
+            {control}
+            {errors[id] && (
+                <span id={`${id}-error`} role='alert' className={classes.error}>
+                    {errors[id]}
+                </span>
+            )}
+        </div>
+    );
+
+    const fieldProps = (id) => ({
+        id,
+        name: id,
+        value: form[id],
+        onChange: handleChange(id),
+        'aria-invalid': Boolean(errors[id]),
+        'aria-describedby': errors[id] ? `${id}-error` : undefined,
+    });
+
+    const activeSocials = SOCIALS.filter(({ key }) => socialsData[key]);
 
     return (
         <div
@@ -167,66 +272,63 @@ function Contacts() {
                 <h1 style={{ color: theme.primary }}>Contacts</h1>
                 <div className='contacts-body'>
                     <div className='contacts-form'>
-                        <form onSubmit={handleContactForm}>
-                            <div className='input-container'>
-                                <label htmlFor='Name' className={classes.label}>
-                                    Name
-                                </label>
+                        <form
+                            onSubmit={handleContactForm}
+                            noValidate
+                            className={classes.formCard}
+                        >
+                            {renderField(
+                                'name',
+                                'Name',
                                 <input
-                                    placeholder='John Doe'
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    {...fieldProps('name')}
                                     type='text'
-                                    name='Name'
+                                    placeholder='Full Name'
+                                    autoComplete='name'
                                     className={`form-input ${classes.input}`}
                                 />
-                            </div>
-                            <div className='input-container'>
-                                <label
-                                    htmlFor='Email'
-                                    className={classes.label}
-                                >
-                                    Email
-                                </label>
+                            )}
+                            {renderField(
+                                'email',
+                                'Email',
                                 <input
-                                    placeholder='John@doe.com'
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    {...fieldProps('email')}
                                     type='email'
-                                    name='Email'
+                                    placeholder='@gmail.com'
+                                    autoComplete='email'
                                     className={`form-input ${classes.input}`}
                                 />
-                            </div>
-                            <div className='input-container'>
-                                <label
-                                    htmlFor='Message'
-                                    className={classes.label}
-                                >
-                                    Message
-                                </label>
+                            )}
+                            {renderField(
+                                'message',
+                                'Message',
                                 <textarea
-                                    placeholder='Type your message....'
-                                    value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
-                                    type='text'
-                                    name='Message'
+                                    {...fieldProps('message')}
+                                    placeholder='How can I help?'
                                     className={`form-message ${classes.message}`}
                                 />
-                            </div>
+                            )}
 
                             <div className='submit-btn'>
                                 <button
                                     type='submit'
+                                    disabled={submitting}
                                     className={classes.submitBtn}
                                 >
-                                    <p>{!success ? 'Send' : 'Sent'}</p>
+                                    <p>
+                                        {submitting
+                                            ? 'Sending...'
+                                            : success
+                                            ? 'Sent'
+                                            : 'Send'}
+                                    </p>
                                     <div className='submit-icon'>
                                         <AiOutlineSend
                                             className='send-icon'
                                             style={{
-                                                animation: !success
-                                                    ? 'initial'
-                                                    : 'fly 0.8s linear both',
+                                                animation: success
+                                                    ? 'fly 0.8s linear both'
+                                                    : 'initial',
                                                 position: success
                                                     ? 'absolute'
                                                     : 'initial',
@@ -235,200 +337,118 @@ function Contacts() {
                                         <AiOutlineCheckCircle
                                             className='success-icon'
                                             style={{
-                                                display: !success
-                                                    ? 'none'
-                                                    : 'inline-flex',
-                                                opacity: !success ? '0' : '1',
+                                                display: success
+                                                    ? 'inline-flex'
+                                                    : 'none',
+                                                opacity: success ? '1' : '0',
                                             }}
                                         />
                                     </div>
                                 </button>
                             </div>
                         </form>
+
                         <Snackbar
                             anchorOrigin={{
                                 vertical: 'top',
                                 horizontal: 'center',
                             }}
-                            open={open}
-                            autoHideDuration={4000}
-                            onClose={handleClose}
+                            open={toast.open}
+                            autoHideDuration={5000}
+                            onClose={handleToastClose}
                         >
                             <SnackbarContent
+                                role='status'
                                 action={
-                                    <React.Fragment>
-                                        <IconButton
-                                            size='small'
-                                            aria-label='close'
-                                            color='inherit'
-                                            onClick={handleClose}
-                                        >
-                                            <CloseIcon fontSize='small' />
-                                        </IconButton>
-                                    </React.Fragment>
+                                    <IconButton
+                                        size='small'
+                                        aria-label='Close notification'
+                                        color='inherit'
+                                        onClick={handleToastClose}
+                                    >
+                                        <CloseIcon fontSize='small' />
+                                    </IconButton>
                                 }
                                 style={{
                                     backgroundColor: theme.primary,
                                     color: theme.secondary,
                                     fontFamily: 'var(--primaryFont)',
+                                    borderRadius: '14px',
                                 }}
-                                message={errMsg}
+                                message={toast.text}
                             />
                         </Snackbar>
                     </div>
 
                     <div className='contacts-details'>
-                        <a
-                            // href={`mailto:${contactsData.email}`}
-                            className='personal-details'
-                        >
-                            <div className={classes.detailsIcon}>
-                                <FiAtSign />
+                        {contactsData.email && (
+                            <a
+                                href={`mailto:${contactsData.email}`}
+                                className={`personal-details ${classes.detailRow}`}
+                            >
+                                <div className={classes.detailsIcon}>
+                                    <FiAtSign aria-hidden='true' />
+                                </div>
+                                <p style={{ color: theme.tertiary }}>
+                                    {contactsData.email}
+                                </p>
+                            </a>
+                        )}
+                        {contactsData.phone && (
+                            <a
+                                href={`tel:${contactsData.phone.replace(
+                                    /[^\d+]/g,
+                                    ''
+                                )}`}
+                                className={`personal-details ${classes.detailRow}`}
+                            >
+                                <div className={classes.detailsIcon}>
+                                    <FiPhone aria-hidden='true' />
+                                </div>
+                                <p style={{ color: theme.tertiary }}>
+                                    {contactsData.phone}
+                                </p>
+                            </a>
+                        )}
+                        {contactsData.address && (
+                            <div
+                                className={`personal-details ${classes.detailRow}`}
+                            >
+                                <div className={classes.detailsIcon}>
+                                    <HiOutlineLocationMarker aria-hidden='true' />
+                                </div>
+                                <p style={{ color: theme.tertiary }}>
+                                    {contactsData.address}
+                                </p>
                             </div>
-                            <p style={{ color: theme.tertiary }}>
-                                {contactsData.email}
-                            </p>
-                        </a>
-                        <a
-                            // href={`tel:${contactsData.phone}`}
-                            className='personal-details'
-                        >
-                            <div className={classes.detailsIcon}>
-                                <FiPhone />
-                            </div>
-                            <p style={{ color: theme.tertiary }}>
-                                {contactsData.phone}
-                            </p>
-                        </a>
-                        <div className='personal-details'>
-                            <div className={classes.detailsIcon}>
-                                <HiOutlineLocationMarker />
-                            </div>
-                            <p style={{ color: theme.tertiary }}>
-                                {contactsData.address}
-                            </p>
-                        </div>
+                        )}
 
-                        <div className='socialmedia-icons'>
-                            {socialsData.twitter && (
-                                <a
-                                    href={socialsData.twitter}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={classes.socialIcon}
-                                >
-                                    <FaSquareXTwitter aria-label='Twitter' />
-                                    
-                                </a>
-                            )}
-                            {socialsData.github && (
-                                <a
-                                    href={socialsData.github}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={classes.socialIcon}
-                                >
-                                    <FaGithub aria-label='GitHub' />
-                                </a>
-                            )}
-                            {socialsData.linkedIn && (
-                                <a
-                                    href={socialsData.linkedIn}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={classes.socialIcon}
-                                >
-                                    <FaLinkedin aria-label='LinkedIn' />
-                                </a>
-                            )}
-                            {/* {socialsData.instagram && (
-                                <a
-                                    href={socialsData.instagram}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={classes.socialIcon}
-                                >
-                                    <FaInstagram aria-label='Instagram' />
-                                </a>
-                            )}*/}
-                            {/* {socialsData.medium && (
-                                <a
-                                    href={socialsData.medium}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={classes.socialIcon}
-                                >
-                                    <FaMediumM aria-label='Medium' />
-                                </a>
-                            )} */}
-                            {/*
-                            {socialsData.blogger && (
-                                <a
-                                    href={socialsData.blogger}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={classes.socialIcon}
-                                >
-                                    <FaBloggerB aria-label='Blogger' />
-                                </a>
-                            )}
-                            {socialsData.youtube && (
-                                <a
-                                    href={socialsData.youtube}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={classes.socialIcon}
-                                >
-                                    <FaYoutube aria-label='YouTube' />
-                                </a>
-                            )}
-                            {socialsData.reddit && (
-                                <a
-                                    href={socialsData.reddit}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={classes.socialIcon}
-                                >
-                                    <FaRedditAlien aria-label='Reddit' />
-                                </a>
-                            )}
-                            {socialsData.stackOverflow && (
-                                <a
-                                    href={socialsData.stackOverflow}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={classes.socialIcon}
-                                >
-                                    <FaStackOverflow aria-label='Stack Overflow' />
-                                </a>
-                            )}
-                            {socialsData.codepen && (
-                                <a
-                                    href={socialsData.codepen}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={classes.socialIcon}
-                                >
-                                    <FaCodepen aria-label='CodePen' />
-                                </a>
-                            )}
-                            {socialsData.gitlab && (
-                                <a
-                                    href={socialsData.gitlab}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                    className={classes.socialIcon}
-                                >
-                                    <FaGitlab aria-label='GitLab' />
-                                </a>
-                            )} */}
-                        </div>
+                        {activeSocials.length > 0 && (
+                            <div
+                                className='socialmedia-icons'
+                                style={{ padding: '6px 14px' }}
+                            >
+                                {activeSocials.map(({ key, label, Icon }) => (
+                                    <a
+                                        key={key}
+                                        href={socialsData[key]}
+                                        target='_blank'
+                                        rel='noreferrer noopener'
+                                        aria-label={label}
+                                        className={classes.socialIcon}
+                                    >
+                                        <Icon aria-hidden='true' />
+                                    </a>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
             <img
                 src={theme.contactsimg}
-                alt='contacts'
+                alt=''
+                aria-hidden='true'
                 className='contacts--img'
             />
         </div>

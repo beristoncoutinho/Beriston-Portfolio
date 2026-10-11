@@ -1,5 +1,16 @@
-.experience{
+/* Colours come from --primary / --secondary / --tertiary (set from your theme in Experience.js) */
+
+.experience {
     min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 5rem 0;
+    box-sizing: border-box;
+    /* faint grid, like a network diagram canvas */
+    background-image:
+        linear-gradient(color-mix(in srgb, var(--tertiary) 5%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--tertiary) 5%, transparent) 1px, transparent 1px);
+    background-size: 44px 44px;
 }
 
 .experience-body {
@@ -21,63 +32,6 @@
     margin-right: 2rem;
 }
 
-.experience-description > h1 {
-    font-size: 3.5rem;
-    font-family: var(--primaryFont);
-    margin-bottom: 2rem;
-}
-
-.experience-card {
-    display: flex;
-    flex-direction: row;
-    align-items:flex-start;
-    justify-content: flex-start;
-    width: 90%;
-    height: 140px;
-    padding: 1.5rem;
-    border-radius: 20px;
-    margin-bottom: 1.5rem;
-    transition: background-color 200ms ease-in-out;
-}
-
-.expcard-img {
-    border-radius: 50%;
-    width: 55px;
-    height: 55px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.expcard-img > img {
-    width: 36px;
-    pointer-events: none;
-}
-
-.experience-details {
-    margin-left: 0.6rem;
-}
-
-.experience-details > h6 {
-    font-family: var(--primaryFont);
-    font-size: 0.85rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-.experience-details > h4 {
-    font-family: var(--primaryFont);
-    font-size: 1.225rem;
-    font-weight: 600;
-}
-
-.experience-details > h5 {
-    font-family: var(--primaryFont);
-    font-size: 1.15rem;
-    font-weight: 600;
-}
-
 .experience-image {
     box-sizing: border-box;
     padding: 1rem;
@@ -92,16 +46,251 @@
     pointer-events: none;
 }
 
-
-
-
-
-
-@media (min-width: 992px) and (max-width: 1380px) {
-
+/* ---------- HEADER ---------- */
+.exp-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    margin-bottom: 2.2rem;
 }
 
+.exp-head h1 {
+    margin: 0;
+    font-size: 3.5rem;
+    font-family: var(--primaryFont);
+}
 
+.exp-replay {
+    padding: 0.45rem 1.1rem;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.8rem;
+    color: var(--primary);
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--primary) 55%, transparent);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.exp-replay:hover,
+.exp-replay:focus-visible {
+    background: var(--primary);
+    color: var(--secondary);
+    outline: none;
+}
+
+/* ---------- ROUTE ---------- */
+.exp-route {
+    --gutter: 64px; /* space left of the cards for the cable */
+    --cx: 20px; /* x position of the cable's centre line */
+    position: relative;
+    width: 90%;
+    padding-left: var(--gutter);
+    box-sizing: border-box;
+}
+
+.exp-line {
+    position: absolute;
+    left: calc(var(--cx) - 1px);
+    width: 2px;
+    background: color-mix(in srgb, var(--tertiary) 20%, transparent);
+    border-radius: 2px;
+}
+
+.exp-line-fill {
+    width: 100%;
+    background: var(--primary);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--primary) 70%, transparent);
+    transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.exp-packet {
+    position: absolute;
+    left: var(--cx);
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+    border-radius: 50%;
+    background: var(--primary);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 25%, transparent),
+        0 0 16px var(--primary);
+    transition: top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* ---------- HOP (one job) ---------- */
+.exp-hop {
+    position: relative;
+    margin-bottom: 1.4rem;
+    cursor: pointer;
+    opacity: 0.45;
+    transition: opacity 0.4s ease;
+}
+
+.exp-hop:last-child {
+    margin-bottom: 0;
+}
+
+.exp-hop.is-online {
+    opacity: 1;
+}
+
+.exp-hop:focus-visible {
+    outline: none;
+}
+
+.exp-hop:focus-visible .exp-card {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+.exp-node {
+    position: absolute;
+    left: calc(var(--cx) - 12px - var(--gutter));
+    top: 1.45rem;
+    width: 24px;
+    height: 24px;
+    box-sizing: border-box;
+    border-radius: 7px;
+    background: var(--secondary);
+    border: 2px solid color-mix(in srgb, var(--tertiary) 35%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.exp-hop.is-online .exp-node {
+    border-color: var(--primary);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--primary) 40%, transparent);
+}
+
+.exp-led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--tertiary) 35%, transparent);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.exp-hop.is-online .exp-led {
+    background: #22c55e;
+    box-shadow: 0 0 6px #22c55e;
+}
+
+.exp-hop.is-active.is-online .exp-led {
+    animation: exp-blink 1.4s ease-in-out infinite;
+}
+
+@keyframes exp-blink {
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* ping ring when a hop is clicked */
+.exp-ring {
+    position: absolute;
+    inset: -2px;
+    border-radius: 7px;
+    border: 2px solid var(--primary);
+    pointer-events: none;
+    animation: exp-ping 0.8s ease-out forwards;
+}
+
+@keyframes exp-ping {
+    from {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+    to {
+        transform: scale(2.6);
+        opacity: 0;
+    }
+}
+
+/* ---------- CARD ---------- */
+.exp-card {
+    padding: 1.2rem 1.5rem;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--tertiary) 7%, var(--secondary));
+    border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.exp-hop:hover .exp-card,
+.exp-hop.is-current .exp-card {
+    border-color: color-mix(in srgb, var(--primary) 75%, transparent);
+    transform: translateX(4px);
+}
+
+.exp-hop.is-current .exp-card {
+    box-shadow: 0 0 28px color-mix(in srgb, var(--primary) 16%, transparent);
+}
+
+.exp-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.7rem;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.74rem;
+}
+
+.exp-hopno {
+    color: var(--primary);
+}
+
+.exp-status {
+    color: color-mix(in srgb, var(--tertiary) 60%, transparent);
+}
+
+.exp-hop.is-active.is-online .exp-status {
+    color: #22c55e;
+}
+
+.exp-card h4 {
+    margin: 0 0 0.25rem;
+    font-family: var(--primaryFont);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--tertiary);
+}
+
+.exp-card h5 {
+    margin: 0;
+    font-family: var(--primaryFont);
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.exp-card-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.78rem;
+}
+
+.exp-years {
+    color: color-mix(in srgb, var(--tertiary) 70%, transparent);
+}
+
+.exp-uptime {
+    padding: 0.15rem 0.7rem;
+    color: var(--primary);
+    border: 1px solid color-mix(in srgb, var(--primary) 45%, transparent);
+    border-radius: 999px;
+}
+
+/* ---------- RESPONSIVE ---------- */
 @media screen and (max-width: 992px) {
     .experience {
         min-height: 100%;
@@ -112,72 +301,55 @@
     .experience-description {
         flex: 1;
         margin: auto;
-    }    
-    .experience-description > h1{
-        font-size: 3.2rem;
     }
-    .experience-card {
+    .exp-head,
+    .exp-route {
         width: 100%;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
+    }
+    .exp-head h1 {
+        font-size: 3.2rem;
     }
 }
 
 @media screen and (max-width: 800px) {
-    .experience-description > h1{
-        font-size: 3rem;
-        margin-bottom: 2rem;
-        align-self: center;
-    }
     .experience-description {
         padding: 1rem;
     }
-    .experience-card {
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-        height: 130px;
+    .exp-head h1 {
+        font-size: 3rem;
     }
-    .expcard-img {
-        border-radius: 50%;
-        width: 45px;
-        height: 45px;
+    .exp-card {
+        padding: 1rem 1.2rem;
     }
-    
-    .expcard-img > img {
-        width: 30px;
-    }
-    .experience-details > h6 {
-        font-size: 0.85rem;
-        margin-bottom: 0.45rem;
-    }
-    
-    .experience-details > h4 {
+    .exp-card h4 {
         font-size: 1.125rem;
-        line-height: 126%;
     }
-    
-    .experience-details > h5 {
+    .exp-card h5 {
         font-size: 1.05rem;
-        line-height: 126%;
     }
 }
 
 @media screen and (max-width: 600px) {
-    .experience-description > h1{
+    .exp-head h1 {
         font-size: 2.5rem;
+    }
+    .exp-route {
+        --gutter: 52px;
+        --cx: 16px;
     }
 }
 
-@media screen and (max-width: 400px) {
-
-}
-  
-@media only screen and (min-device-width: 320px) and (max-device-width: 
-  480px) and (-webkit-device-pixel-ratio: 2) and (device-aspect-ratio: 2/3) {
-
-}
-
-
-@media only screen and (device-width: 768px) {
-
+@media (prefers-reduced-motion: reduce) {
+    .exp-line-fill,
+    .exp-packet,
+    .exp-hop,
+    .exp-node,
+    .exp-led,
+    .exp-card {
+        transition: none;
+    }
+    .exp-hop.is-active.is-online .exp-led,
+    .exp-ring {
+        animation: none;
+    }
 }

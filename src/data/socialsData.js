@@ -9,5 +9,5 @@ export const socialsData = {
     blogger: '',
     stackOverflow: '',
     gitlab: '',
-    youtube: ''
+    youtube: 'https://www.youtube.com/@factonaut777'
 }

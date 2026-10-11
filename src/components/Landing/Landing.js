@@ -7,13 +7,9 @@ import './Landing.css';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { headerData } from '../../data/headerData';
 import { socialsData } from '../../data/socialsData';
-import { FaSquareXTwitter } from "react-icons/fa6";
-import {
-    FaLinkedin,
-    FaGithub,
-    FaYoutube,
-    FaBlogger,
-} from 'react-icons/fa';
+import NetworkBackground from './NetworkBackground';
+import { FaSquareXTwitter } from 'react-icons/fa6';
+import { FaLinkedin, FaGithub } from 'react-icons/fa';
 
 function Landing() {
     const { theme, drawerOpen } = useContext(ThemeContext);
@@ -74,9 +70,7 @@ function Landing() {
                     style={{ backgroundColor: theme.primary }}
                 >
                     <div className='lcl--content'>
-
-
-                              {socialsData.twitter && (
+                        {socialsData.twitter && (
                             <a
                                 href={socialsData.twitter}
                                 target='_blank'
@@ -89,7 +83,7 @@ function Landing() {
                                 />
                             </a>
                         )}
-                       
+
                         {socialsData.github && (
                             <a
                                 href={socialsData.github}
@@ -103,7 +97,8 @@ function Landing() {
                                 />
                             </a>
                         )}
-                         {socialsData.linkedIn && (
+
+                        {socialsData.linkedIn && (
                             <a
                                 href={socialsData.linkedIn}
                                 target='_blank'
@@ -116,36 +111,10 @@ function Landing() {
                                 />
                             </a>
                         )}
-                  
-                        {/* {socialsData.youtube && (
-                            <a
-                                href={socialsData.youtube}
-                                target='_blank'
-                                rel='noreferrer'
-                            >
-                                <FaYoutube
-                                    className='landing--social'
-                                    style={{ color: theme.secondary }}
-                                    aria-label='YouTube'
-                                />
-                            </a>
-                        )}
-                        {socialsData.blogger && (
-                            <a
-                                href={socialsData.blogger}
-                                target='_blank'
-                                rel='noreferrer'
-                            >
-                                <FaBlogger
-                                    className='landing--social'
-                                    style={{ color: theme.secondary }}
-                                    aria-label='Blogger'
-                                />
-                            </a>
-                        )} */}
                     </div>
                 </div>
-                 <img
+
+                <img
                     src={headerData.image}
                     alt=''
                     className='landing--img'
@@ -153,11 +122,19 @@ function Landing() {
                         opacity: `${drawerOpen ? '0' : '1'}`,
                         borderColor: theme.secondary,
                     }}
-                /> 
+                />
+
                 <div
                     className='landing--container-right'
                     style={{ backgroundColor: theme.secondary }}
                 >
+                    {/* 3D LAN cable network (three.js) */}
+                    <NetworkBackground
+                        primary={theme.primary}
+                        secondary={theme.secondary}
+                        tertiary={theme.tertiary}
+                    />
+
                     <div
                         className='lcr--content'
                         style={{ color: theme.tertiary }}

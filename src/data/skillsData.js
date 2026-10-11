@@ -1,100 +1,47 @@
 export const skillsData = [
+  {
+    category: "Networking & Infrastructure",
+    skills: [
+      { name: 'Networking', icon: 'FaNetworkWired' },
+      { name: 'Routing', icon: 'FaRoute' },
+      { name: 'Switching', icon: 'FaDiagramProject' }, // Updated icon key
+      { name: 'VLANs', icon: 'FaSitemap' },
+      { name: 'TCP/IP', icon: 'FaEthernet' },
+      { name: 'Subnetting', icon: 'FaCalculator' },
+      { name: 'DHCP', icon: 'FaServer' },
+    //   { name: 'DNS', icon: 'FaGlobe' },
+    ]
+  },
+  // ... other categories
+  {
+    category: "Systems & Virtualization",
+    skills: [
+      { name: 'Active Directory', icon: 'FaUserLock' },
+      { name: 'Windows', icon: 'FaWindows' },
+      { name: 'Servers', icon: 'FaServer' },
+      { name: 'Virtualization', icon: 'SiVmware' },
+      { name: 'NAS', icon: 'FaDatabase' },
+      { name: 'Backup', icon: 'FaCloudUploadAlt' },
+    ]
+  },
+  {
+    category: "Security & Operations",
+    skills: [
+      { name: 'Firewalls', icon: 'FaShieldHalved' },
+      { name: 'VPN', icon: 'FaUserShield' },
+      { name: 'Security', icon: 'FaLock' },
+      { name: 'Monitoring', icon: 'FaChartLine' },
+    ]
+  },
+  {
+    category: "Hardware & Support",
+    skills: [
+      { name: 'Hardware', icon: 'FaMicrochip' },
+      { name: 'Troubleshooting', icon: 'FaWrench' },
+      { name: 'Support', icon: 'FaHeadset' },
+    ]
+  }
+];
 
-    'Networking', 'Routing', 'Switching', 'Troubleshooting', 'Firewalls', 'VLANs', 'TCP/IP', 'Subnetting', 'DHCP', 'DNS', 'VPN', 'Active Directory', 'Windows', 'Servers', 'NAS', 'Virtualization', 'Backup', 'Monitoring', 'Security', 'Hardware', 'Support',
-    'HTML',
-    'CSS',
-    'Microsoft Office',
-    'Figma',
-    'Canva',
-    'Gimp',
-    'illustrator',
 
 
-]
-
-// Choose your skills from below. Make sure it's in the same format and spelled correctly.
-// Couldn't find the required skills? Raise an issue on github at https://github.com/hhhrrrttt222111/developer-portfolio/issues/new
-
-
-// AVAILABLE SKILLS
-
-/* 
-    HTML
-    CSS
-    JS 
-    React
-    Next JS
-    Nuxt JS
-    Node JS
-    Vue
-    Angular
-    Docker
-    Photoshop
-    Illustrator
-    Svelte
-    GCP
-    Azure
-    Fastify
-    Haxe
-    Ionic
-    Markdown
-    Microsoft Office
-    Picsart
-    Sketch
-    Unity
-    WolframAlpha
-    Adobe XD
-    After Effects
-    Bootstrap
-    Bulma
-    CapacitorJs
-    Coffeescript
-    MemSQL
-    C
-    C++
-    C#
-    Python
-    Java
-    Julia
-    Matlab
-    Swift
-    Ruby
-    Kotlin
-    Go
-    PHP
-    Flutter
-    Dart
-    Typescript
-    Swift
-    Git
-    Figma
-    Canva
-    Ubuntu
-    Bootstrap
-    MongoDB
-    Tailwind
-    ViteJS
-    VuetifyJS
-    MySQL
-    PostgreSQL
-    AWS
-    Firebase
-    Blender
-    Premiere Pro
-    Adobe Audition
-    Deno
-    Django
-    Gimp
-    Graphql
-    Lightroom
-    MaterialUI
-    Nginx
-    Numpy
-    OpenCV
-    Pytorch
-    Selenium
-    Strapi
-    Tensorflow
-    Webex
-    Wordpress
-*/
