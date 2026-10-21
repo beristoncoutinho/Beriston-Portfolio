@@ -1,7 +1,8 @@
-import resume from '../assets/pdf/Beriston_Coutinho_Resume.pdf'
+// import resume from '../assets/pdf/Beriston_Coutinho_Resume.pdf'
 // import resume from '../assets/pdf/Beriston_Coutinho_CV.pdf'
 // import profile from '../assets/png/profile7.jpeg'
 // import profile from '../assets/png/profile-8.png'
+import resume from '../assets/pdf/Beriston Coutinho CV.pdf'
 import profile from '../assets/png/pf.jpeg'
 export const headerData = {
     name: 'Beriston Coutinho',
